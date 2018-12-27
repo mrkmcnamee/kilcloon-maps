@@ -1,0 +1,62 @@
+.info {
+	padding: 6px 8px;
+	font: 14px/16px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255,255,255,0.8);
+	box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	border-radius: 5px;
+}
+.info h4 {
+	margin: 0 0 0 0;
+	color: #777;
+}
+
+.tooltipRK {
+	font-weight: bold;
+	font-size: large;
+	color: #E65100;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.tooltipCP {
+	font-weight: bold;
+	font-size: normal;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.tooltipCPLarge {
+	font-weight: bold;
+	font-size: large;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.tooltipTL {
+	background: none;
+	font-size: normal;
+	border: none;
+	box-shadow: none;
+}
+.tooltipTown {
+	font-weight: bold;
+	font-size: normal;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.tooltipCT {
+	font-weight: bold;
+	font-size: normal;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+.tooltipBarony {
+	font-weight: bold;
+	font-size: large;
+	background: none;
+	border: none;
+	box-shadow: none;
+}

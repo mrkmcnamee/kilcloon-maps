@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<title>Kilcloon Maps</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/material_design_colors_full.css" />
+    <link rel="stylesheet" href="css/map.css" />
+
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
+    <meta name="description" content="">
+    <meta name="referrer" content="unsafe-url">
+	<meta charset="UTF-8"> 
+ 
+	<script type="text/javascript" src="js/coordinates_townlands.js"></script>
+	<script type="text/javascript" src="js/coordinates_civilparishes.js"></script>
+	<script type="text/javascript" src="js/coordinates_eircodes.js"></script>
+ 	<script type="text/javascript" src="js/coordinates_censustowns.js"></script>
+  	<script type="text/javascript" src="js/coordinates_towns.js"></script>
+  	<script type="text/javascript" src="js/coordinates_baronies.js"></script>
+  	<script type="text/javascript" src="js/geojson_features.js"></script>
+  	<script type="text/javascript" src="js/custom_icons.js"></script>
+  </head>
+  
+  <body>
+	<div style="float: left; width: 10%;">
+	<h4>Map Menu</h4>
+	<p><a style="cursor: pointer;" onclick="generateMap('civilparishes');">Civil parishes</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('townlands');">Townlands</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('schools');">Schools</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('gaapitches');">GAA pitches</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('churches');">Churches</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('postoffices');">Post offices</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('postaltown');">Postal town</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('postaltownzoom');">Postal town 2</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('censustown');">Census town</a>
+	<p><a style="cursor: pointer;" onclick="generateMap('village');">Village</a>
+	</div>
+	<div>
+		<div id="map" style="height: 600px; width: 700px;"></div>
+	</div>
+ 
+	<script>
+		var map;
+		var mapTitle = "Kilcloon";
+		var centre = [53.48, -6.55];
+		var defaultZoom = 11;
+		var geo_features = {"type": "FeatureCollection", "features": []};
+		generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+		
+		function generateMap(mapname) {
+			switch (mapname) {
+				case "civilparishes":
+					var mapTitle = "Kilcloon civil parishes";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(barony_features);
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					var centre = [53.48, -6.55];
+					var defaultZoom = 11;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "townlands":
+					var mapTitle = "Kilcloon townlands";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(kilclone_cp_features);
+					var centre = [53.43, -6.615];
+					var defaultZoom = 13;
+					var useSpecialFontAndWeightForCPs = true;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom, [0,0], useSpecialFontAndWeightForCPs);
+					break;
+				case "schools":
+					var mapTitle = "Kilcloon schools";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(schools_features);
+					var centre = [53.44, -6.59];
+					var defaultZoom = 12;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "gaapitches":
+					var mapTitle = "Kilcloon GAA pitches";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(gaa_features);
+					var centre = [53.44, -6.59];
+					var defaultZoom = 12;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "churches":
+					var mapTitle = "Kilcloon churches";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(churches_features);
+					var centre = [53.44, -6.59];
+					var defaultZoom = 12;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "postoffices":
+					var mapTitle = "Kilcloon Post offices";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(postoffices_features);
+					var centre = [53.44, -6.59];
+					var defaultZoom = 12;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "postaltown":
+					var mapTitle = "Kilcloon postal town";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(a85_routing_key_features);
+					var centre = [53.44, -6.59];
+					var defaultZoom = 12;
+					var rkOffset = [150, -60];
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom, rkOffset);
+					break;
+				case "postaltownzoom":
+					var mapTitle = "Kilcloon postal town";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(civilparishes_features);
+					geo_features.features = geo_features.features.concat(kilclone_cp_features);
+					geo_features.features = geo_features.features.concat(other_cp_features);
+					geo_features.features = geo_features.features.concat(a85_routing_key_features);
+					var centre = [53.43, -6.60];
+					var defaultZoom = 13;
+					var rkOffset = [250, -690];
+					var useSpecialFontAndWeightForCPs = true;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom, rkOffset, useSpecialFontAndWeightForCPs);
+					break;
+				case "censustown":
+					var mapTitle = "Kilcloon census town & village";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(kilcloon_census_town_features);
+					geo_features.features = geo_features.features.concat(kilcloon_village_features);
+					var centre = [53.425, -6.575];
+					var defaultZoom = 15;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+				case "village":
+					var mapTitle = "Kilcloon village";
+					var geo_features = {"type": "FeatureCollection", "features": []};
+					geo_features.features = geo_features.features.concat(kilcloon_village_features);
+					geo_features.features = geo_features.features.concat(schools_features);
+					geo_features.features = geo_features.features.concat(churches_features);
+					geo_features.features = geo_features.features.concat(garden_features);
+					geo_features.features = geo_features.features.concat(community_centre_features);
+					var centre = [53.4235, -6.576];
+					var defaultZoom = 16;
+					generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom);
+					break;
+			}
+		}
+
+		function generateOpenStreetMap(mapTitle, geo_features, centre, defaultZoom, rkOffset = [0,0], useSpecialFontAndWeightForCPs = false) {
+			if (map != undefined) { map.remove(); }
+			map = new L.Map('map', { zoomControl:false });
+			var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmAttrib='Map data © OpenStreetMap contributors';
+			var osm = new L.TileLayer(osmUrl, {minZoom: 5, maxZoom: 18, attribution: osmAttrib});		
+		
+			map.setView(new L.LatLng(centre[0], centre[1]), defaultZoom);
+			map.addLayer(osm);
+			var popup = new L.Popup();
+			
+			L.geoJson(geo_features,
+				{
+					pointToLayer: function (feature, latlng) {
+						var markerLookup = {
+							"church": blueIcon,
+							"school": violetIcon,
+							"post office": orangeIcon,
+							"garden": greenIcon,
+							"community centre": redIcon,
+							"gaa pitch": redIcon
+						};
+						return L.marker(latlng, {icon: markerLookup[feature.properties.geotype]});
+					},
+					style: function (feature) {
+						var style;
+						switch (feature.properties.geotype) {
+							case "barony":
+								style = {
+									weight: 5,
+									color: "#ef5350",
+									opacity: 1,
+									fillColor: "#ef5350",
+									fillOpacity: 0.5
+								};
+								break;
+							case "civil parish":
+								var cpWeight = (useSpecialFontAndWeightForCPs) ? 5: 2;
+								style = {
+									weight: cpWeight,
+									color: "#42a5f5",
+									opacity: 1,
+									fillColor: "#42a5f5",
+									fillOpacity: 0.5
+								};
+								break;
+							case "townland":
+								switch (feature.properties.name) {
+									case "Barstown":
+										style = {
+											weight: 2,
+											color: "#BDBDBD",
+											opacity: 1,
+											fillColor: "#BDBDBD",
+											fillOpacity: 0.5
+										};
+										break;
+									default:
+										style = {
+											weight: 2,
+											color: "#999999",
+											opacity: 1,
+											fillColor: "#5299d6",
+											fillOpacity: 0.5
+										};
+										break;
+								}
+								break;
+							case "town":
+								style = {
+									weight: 3,
+									color: "#66BB6A",
+									opacity: 1,
+									fillColor: "#66BB6A",
+									fillOpacity: 0.5
+								};
+								break;
+							case "routing key":
+								style = {
+									weight: 3,
+									color: "#fb8c00",
+									opacity: 1,
+									fillColor: "#fb8c00",
+									fillOpacity: 0.5
+								};
+								break;
+							case "census town":
+								style = {
+									weight: 3,
+									color: "#FFA726",
+									opacity: 1,
+									fillColor: "#FFA726",
+									fillOpacity: 0.5
+								};
+								break;
+						}
+						return style;
+					},
+					onEachFeature: function (feature, layer) {
+						if (feature.geometry.type == 'Polygon') {
+							switch (feature.properties.geotype) {
+								case "routing key":
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: 'tooltipRK', offset: rkOffset}
+									);
+									break;
+								case "civil parish":
+									var tooltipClass = (useSpecialFontAndWeightForCPs) ? 'tooltipCPLarge' : 'tooltipCP';
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: tooltipClass}
+									);
+									break;
+								case "townland":
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: 'tooltipTL'}
+									);
+									break;
+								case "town":
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: 'tooltipTown', offset: [30, 25]}
+									);
+									break;
+								case "census town":
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: 'tooltipCT', offset: [60, 90]}
+									);
+									break;
+								case "barony":
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, direction: "center", className: 'tooltipBarony', offset: [0, 50]}
+									);
+									break;
+							}
+						}
+						if (feature.geometry.type == 'Point') {
+							switch (feature.properties.geotype) {
+								case "community centre":
+									layer.bindTooltip(feature.properties && feature.properties.name + '<br>(Planned)',
+										{permanent: true, offset: [-10, -10], direction: 'left'}
+									);
+									break;
+								default:
+									layer.bindTooltip(feature.properties && feature.properties.name,
+										{permanent: true, offset: [16, -30], direction: 'right'}
+									);
+									break;
+							}
+						}
+					}
+				}
+				).addTo(map);
+				
+				var info = L.control();
+				info.onAdd = function (map) {
+					this._div = L.DomUtil.create('div', 'info');
+					this._div.innerHTML = '<h4>' + mapTitle + '</h4>';
+					return this._div;
+				};
+				info.addTo(map);
+		};
+	</script>
+  </body>
+
+</html>
