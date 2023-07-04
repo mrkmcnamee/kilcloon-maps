@@ -183,15 +183,7 @@ var schools_features = [
 			"type": "Point",
 			"coordinates": [-6.53468,53.46868]
 		}
-	},
-	{
-		"type": "Feature",
-		'properties': {'name': "Stepping Stones School", 'geotype': "school"},
-		"geometry": {
-			"type": "Point",
-			"coordinates": [-6.57596,53.42044]
-		}
-	}	
+	}
 ];
 
 var churches_features = [
